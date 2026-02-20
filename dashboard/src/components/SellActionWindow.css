@@ -1,0 +1,25 @@
+/* Container and inputs remains same as your code */
+.sell-header {
+  background-color: #ff5722 !important; /* Tomato Orange for Sell Warning */
+}
+
+.btn-orange {
+  background-color: #ff5722;
+  color: white;
+  text-decoration: none;
+  padding: 10px 25px;
+  border-radius: 2px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-orange:hover {
+  background-color: #e64a19;
+}
+
+.sell-window-container {
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  z-index: 1000;
+  position: fixed; /* Taaki center me dikhe */
+}
