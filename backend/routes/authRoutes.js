@@ -5,155 +5,164 @@ const { UserModel } = require("../model/UserModel");
 
 const router = express.Router();
 
-let OtpStore = {};
 
-//Send OTP
-router.post("/sendOtp", (req, res) =>{
-    const { phone } = req.body;
+// EMAIL CHECK ROUTE
+router.post("/checkEmail", async (req,res)=>{
 
-    // Generate 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    OtpStore[phone] = otp;
-
-    console.log(`OTP for ${phone} is ${otp}`);
-
-    res.send({message: "OTP sent successfully"});
-});
-
-//Verify OTP
-router.post("/verifyOtp", async (req, res)=>{
     try{
-        const{phone, otp} = req.body;
 
-        if(OtpStore[phone] == otp){
-            // OTP is correct, check if user is registered
-            const user = await UserModel.findOne({phone});
-            
-            if(user){
-                // User is registered - generate token
-                const token = jwt.sign(
-                    {phone: user.phone, id: user._id},
-                    process.env.JWT_SECRET || "your_secret_key",
-                    {expiresIn: "7d"}
-                );
-                
-                delete OtpStore[phone];
-                
-                return res.json({
-                    message: "OTP verified successfully",
-                    isRegistered: true,
-                    token,
-                    userName: user.name,
-                    userId: user._id
-                });
-            } else {
-                // User not registered - send isRegistered: false
-                delete OtpStore[phone];
-                
-                return res.json({
-                    message: "OTP verified successfully",
-                    isRegistered: false
-                });
-            }
+        const {email} = req.body;
+
+        if(!email){
+            return res.status(400).json({
+                message:"Email required"
+            })
         }
-        else{
-            res.status(400).json({message: "Invalid OTP"});
+
+        const user = await UserModel.findOne({email});
+
+        // अगर user exist करता है
+        if(user){
+
+            const token = jwt.sign(
+                {id:user._id,email:user.email},
+                process.env.JWT_SECRET || "your_secret_key",
+                {expiresIn:"7d"}
+            )
+
+            return res.json({
+                isRegistered:true,
+                token,
+                userName:user.name,
+                userId:user._id
+            })
+
         }
+
+        // user exist नहीं करता
+
+        res.json({
+            isRegistered:false
+        })
+
     }
     catch(err){
-        console.error("Verify OTP Error:", err);
-        res.status(500).json({message: "Error verifying OTP"});
-    }
-});
-
-//Register User
-router.post("/register", async (req, res) => {
-  try {
-    const { phone, name, email, password } = req.body;
-
-    if (!phone || !name || !email || !password) {
-      return res.status(400).json({ message: "All fields required" });
+        console.log(err)
+        res.status(500).json({
+            message:"Server error"
+        })
     }
 
-    // Check if user already exists
-    const existingUser = await UserModel.findOne({phone});
-    if(existingUser){
-      return res.status(400).json({message: "Phone number already registered"});
-    }
+})
 
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await UserModel.create({
-      phone,
-      name,
-      email,
-      password: hashedPassword,
-    });
+// REGISTER USER
 
-    // Generate token after registration
-    const token = jwt.sign(
-      {phone: newUser.phone, id: newUser._id},
-      process.env.JWT_SECRET || "your_secret_key",
-      {expiresIn: "7d"}
-    );
+                router.post("/register", async (req,res)=>{
 
-    res.json({ 
-      message: "User registered successfully",
-      token,
-      userName: newUser.name,
-      userId: newUser._id
-    });
+                try{
 
-  } catch (err) {
-    console.error("Register Error:", err);
-    res.status(500).json({ message: "Registration failed" });
-  }
-});
+                const {name,email,password} = req.body;
 
-//Login User with phone and password
-router.post("/login", async (req, res) => {
-  try {
-    const { phone, password } = req.body;
+                if(!name || !email || !password){
+                return res.status(400).json({
+                message:"All fields required"
+                })
+                }
 
-   
-    if (!phone || !password) {
-      return res.status(400).json({ message: "Phone and password required" });
-    }
+                const existingUser = await UserModel.findOne({email})
 
-    // Check if user exists
-    const user = await UserModel.findOne({ phone });
-    if (!user) {
-      return res.status(401).json({ message: "Invalid phone or password" });
-    }
+                if(existingUser){
+                return res.status(400).json({
+                message:"Email already registered"
+                })
+                }
 
-    // Check password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid phone or password" });
-    }
+                const hashedPassword = await bcrypt.hash(password,10)
 
-    // Generate token
-    const token = jwt.sign(
-      {userId: user._id, phone: user.phone},
-      process.env.JWT_SECRET || "your_secret_key",
-      { expiresIn: "7d" }
-    );
+                const newUser = await UserModel.create({
 
-    res.json({
-      message: "Login successful",
-      token,
-       user: {
-        userId: user._id,
-        name: user.name,
-        phone: user.phone,
-        email: user.email
-      }
-    });
+                name,
+                email,
+                password:hashedPassword
 
-  } catch (err) {
-    console.error("Login Error:", err);
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-});
+                })
 
-module.exports = router;
+
+                const token = jwt.sign(
+                {id:newUser._id,email:newUser.email},
+                process.env.JWT_SECRET || "your_secret_key",
+                {expiresIn:"7d"}
+                )
+
+                res.json({
+
+                message:"Registered",
+                token,
+                userName:newUser.name,
+                userId:newUser._id
+
+                })
+
+
+                }
+                catch(err){
+
+                console.log(err)
+
+                res.status(500).json({
+                message:"Registration failed"
+            })
+              }
+                })
+
+                router.post("/login", async(req, res)=>{
+                    try{
+                        const {email, password} = req.body;
+
+                        if(!email || !password) {
+                            return res.status(400).json({
+                                message:"Email and password required"
+                            })
+                        }
+                        const user = await UserModel.findOne({email});
+
+                        if(!user){
+                            return res.status(401).json({
+                                message:"Invalid email or password"
+                            })
+                        }
+                        const isPasswordValid = await bcrypt.compare(
+                            password,
+                            user.password
+                        )
+                        if(!isPasswordValid){
+                            return res.status(401).json({
+                                message:"Invalid email or password"
+                            })
+                        }
+                        const token = jwt.sign(
+                            {id:user._id,email:user.email},
+                            process.env.JWT_SECRET || "your_secret_key",
+                            {expiresIn:"7d"}
+                        )
+                        res.json({
+                            message:"Login successful",
+                            token,
+                            user:{
+                                userId:user._id,
+                                name:user.name,
+                                email:user.email
+                            }
+                        })
+                    }
+                    catch(err){
+                        console.log(err)
+                        res.status(500).json({
+                            message:"Server error"
+                        })
+                    }
+                })
+
+
+                module.exports = router;
