@@ -23,7 +23,7 @@ function Navbar() {
         <nav className="navbar navbar-expand-lg border-bottom" style={{backgroundColor:"#fff"}}>
           <div className="container p-2">
            <Link className="navbar-brand" to={"/"}>
-            <img src="media/images/logo.svg" alt="Zerodha Logo" style={{height:"40px", width:"auto"}}/>  
+            <img src="media/images/logo.svg" alt="Zerodha Logo" style={{height:"20px", width:"auto"}}/>  
            </Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>

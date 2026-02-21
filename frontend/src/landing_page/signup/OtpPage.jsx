@@ -11,15 +11,23 @@ function OtpPage(){
 
     const phone = location.state?.phone;
 
+    const API_BASE_URL = window.location.hostname === "localhost"
+       ? "http://localhost:3002" : "https://zerodha-clone-stmi.onrender.com"
+
     const handleVerifyOtp = async () =>{
         if(!otp || otp.length !== 6){
             alert("Please enter a valid 6-digit OTP");
             return;
         }
+        if (!phone) {
+            alert("Session expired. Please enter phone number again.");
+            navigate("/signup");
+            return;
+        }
 
         try{
             setLoading(true);
-            const response = await axios.post("http://localhost:3002/verifyOtp",{
+            const response = await axios.post(`${API_BASE_URL}/auth/verifyOtp`,{
                 phone,
                 otp,
             });

@@ -14,6 +14,10 @@ function RegisterPage() {
     });
     const [loading, setLoading] = useState(false);
 
+    const API_BASE_URL= 
+        window.location.hostname === "localhost"
+          ? "http://localhost:3002":"https://zerodha-clone-stmi.onrender.com";
+
     const handleChange = (e) =>{
         setForm({...form, [e.target.name]: e.target.value});
     }
@@ -28,7 +32,7 @@ function RegisterPage() {
 
         try{
             setLoading(true);
-            const response = await axios.post("http://localhost:3002/register",{
+            const response = await axios.post(`${API_BASE_URL}/auth/register`,{
                 phone,
                 ...form,
             });

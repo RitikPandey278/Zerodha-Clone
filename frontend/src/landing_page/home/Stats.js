@@ -17,7 +17,7 @@ function Stats() {
           <p className="text-muted mb-4">
             No gimmicks, spam, "gamification", or annoying push notifications.
             High quality apps that you use at your pace, the way you like.
-            <a href="#" style={{ textDecoration: "none" }}>
+            <a href="/term" style={{ textDecoration: "none" }}>
               Our philosophies
             </a>
           </p>
@@ -31,11 +31,11 @@ function Stats() {
           <h2 className="fs-4">Do better with money</h2>
           <p className="text-muted mb-4">
             With initiatives like  
-              <a href="#" style={{ textDecoration: "none" }}>
+              <a href="/term" style={{ textDecoration: "none" }}>
                 Nudge
               </a>
                  and
-              <a href="#" style={{ textDecoration: "none" }}>
+              <a href="/term" style={{ textDecoration: "none" }}>
                   Kill Switch
               </a>
             ,we don't just facilitate
@@ -44,11 +44,11 @@ function Stats() {
         <div className="col-6 p-5">
           <img src="media/images/ecosystem.png" style={{ width: "100%" }} />
           <div className="text-center my-4">
-            <a href="" className="mx-4" style={{textDecoration:"none"}}>
+            <a href="/term" className="mx-4" style={{textDecoration:"none"}}>
               Explore our products
               <i class="fa fa-long-arrow-right" aria-hidden="true" ></i>
             </a>
-            <a href="" style={{textDecoration:"none"}} >
+            <a href="/term" style={{textDecoration:"none"}} >
               Try Kite demo
               <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
             </a>

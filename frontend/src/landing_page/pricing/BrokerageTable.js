@@ -52,7 +52,7 @@ const Brokerage = () => {
           </table>
         </div>
       )}
-    <p className="fs-5 text-center mt-4"><a href=""style={{textDecoration:"none"}}>Calculate your costs upfront </a>using our brokerage calculator</p>
+    <p className="fs-5 text-center mt-4"><a href="/term"style={{textDecoration:"none"}}>Calculate your costs upfront </a>using our brokerage calculator</p>
     </div>
   );
 };

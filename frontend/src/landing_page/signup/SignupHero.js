@@ -24,6 +24,9 @@ function SignupHero() {
         }
     }, [location]);
 
+    const API_BASE_URL = window.location.hostname === "localhost"
+        ? "http://localhost:3002" : "https://zerodha-clone-stmi.onrender.com"
+
     const handleSendOtp = async () =>{
         if(phone.length !== 10){
             alert("Please enter a valid 10-digit phone number.");
@@ -32,7 +35,7 @@ function SignupHero() {
         try{
             setLoading(true);
 
-            await axios.post("http://localhost:3002/sendOtp",{
+            await axios.post(`${API_BASE_URL}/auth/sendOtp `,{
                 phone,
             });
             navigate("/signup/otp", {state:{phone}});
@@ -96,8 +99,8 @@ function SignupHero() {
                 className="text-muted" 
                 style={{ fontSize: "12px", lineHeight: "1.6" }}>
                 By proceeding, you agree to the Zerodha{" "}
-                <a href="#" className="text-decoration-none">terms</a> &{" "}
-                <a href="#" className="text-decoration-none">privacy policy</a>
+                <a href="/term" className="text-decoration-none">terms</a> &{" "}
+                <a href="/term" className="text-decoration-none">privacy policy</a>
               </p>
 
               <hr />
@@ -109,7 +112,7 @@ function SignupHero() {
                 marginBottom:"50px"
                 }}>
                 Looking to open NRI account?{" "}
-                <a href="#" className="text-decoration-none">
+                <a href="/term" className="text-decoration-none">
                   Click here
                 </a>
               </p>
