@@ -11,14 +11,16 @@ const { SellsModel} = require('./model/SellsModel');
 
 const authRoutes = require("./routes/authRoutes");
 
-const PORT = process.env.PORT || 3002;
-const uri = process.env.MONGO_URL;
+// const PORT = process.env.PORT || 3002;
+// const uri = process.env.MONGO_URL;
 
 
 const app = express();
 
 
-app.use(cors());
+app.use(cors({
+  origin:"*"
+}));
 app.use(express.json());
 
 app.use(bodyParser.json());
@@ -202,17 +204,31 @@ app.use("/auth", authRoutes);
 // });
 
 app.get('/allHoldings', async(req, res)=>{
-  let allHoldings = await HoldingsModel.find({});
-  res.json(allHoldings);
+  try{
+    let allHoldings = await HoldingsModel.find({});
+    res.json(allHoldings);
+  }
+  catch{
+    res.status(500).json({message: "Error fetching holdings"})
+  }
+  
 });
 
 app.get('/allPositions', async(req, res)=>{
-  let allPositions = await PositionsModel.find({});
-  res.json(allPositions);
+  try{
+     let allPositions = await PositionsModel.find({});
+     res.json(allPositions);
+  }
+  catch{
+    res.status(500).json({message:"Error fetching positions"})
+  }
+ 
 });
 
 app.post('/newOrder', async(req, res)=>{
-  let newOrder = new OrdersModel({
+
+  try{
+    let newOrder = new OrdersModel({
     name: req.body.name,
     qty:  req.body.qty,
     price: req.body.price,
@@ -220,8 +236,14 @@ app.post('/newOrder', async(req, res)=>{
 
   });
     
-  newOrder.save();
-  res.send("Order saved");
+  await newOrder.save();
+  res.status(200).json({ message: "Order saved successfully" });
+
+  }
+  catch{
+    res.status(500).json({ message: "Error saving order" });
+  }
+  
 
 });
 //Saare Orders fetch karne ke liye (Sell window mein dikhane ke liye)
@@ -283,9 +305,16 @@ app.post('/sellOrder', async (req, res) => {
   }
 });
 
+const PORT = process.env.PORT || 3002
 
-app.listen(PORT, ()=>{
-    console.log("APP started");
-    mongoose.connect(uri);
-    console.log("DB connected");
-});
+mongoose.connect(process.env.MONGO_URL)
+.then(()=>{
+  console.log("✅ MongoDB Connected")
+
+  app.listen(PORT, ()=>{
+     console.log("🚀 Server running on port ${PORT}`");
+  });
+})
+.catch((err)=>{
+  console.error("❌ MongoDB connection failed:", err);
+})
