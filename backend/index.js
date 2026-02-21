@@ -312,7 +312,7 @@ mongoose.connect(process.env.MONGO_URL)
   console.log("✅ MongoDB Connected")
 
   app.listen(PORT, ()=>{
-     console.log("🚀 Server running on port ${PORT}`");
+     console.log(`🚀 Server running on port ${PORT}`);
   });
 })
 .catch((err)=>{
