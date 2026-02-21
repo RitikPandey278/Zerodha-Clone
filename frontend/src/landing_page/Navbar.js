@@ -23,7 +23,7 @@ function Navbar() {
         <nav className="navbar navbar-expand-lg border-bottom" style={{backgroundColor:"#fff"}}>
           <div className="container p-2">
            <Link className="navbar-brand" to={"/"}>
-            <img src="media/images/logo.svg" alt="Zerodha Logo" style={{height:"20px", width:"auto"}}/>  
+            <img src="/logo.svg" alt="Zerodha Logo" style={{height:"20px", width:"auto"}}/>  
            </Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -95,7 +95,7 @@ function Navbar() {
                   <button
                     onClick={() => {
                       setShowDropdown(false);
-                      window.location.href = "http://localhost:3000/login";
+                      window.location.href = "http://localhost:3001/login";
                     }}
                     className='d-block w-100 text-start px-3 py-2 text-dark'
                     style={{fontSize: "14px", borderBottom:"1px solid #eee", background: "none", border: "none", cursor: "pointer"}}

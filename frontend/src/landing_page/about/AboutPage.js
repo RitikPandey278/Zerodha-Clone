@@ -10,9 +10,6 @@ function AboutPage() {
         <>
           <Hero />
           <Team />
-         
-          
-        
         </>
 
      );

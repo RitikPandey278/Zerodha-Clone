@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import "./KiteLogin.css";
 
 const KiteLogin = () => {
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const Frontend_BASE_URL = window.location.hostname ==="localhost"
+     ? "http://localhost:3002":"https://zerodha-clone-stmi.onrender.com"
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,8 +19,8 @@ const KiteLogin = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:3002/auth/login", {
-        phone,
+      const response = await axios.post(`${Frontend_BASE_URL}/auth/login`, {
+        email,
         password,
       });
 
@@ -49,13 +52,13 @@ const KiteLogin = () => {
 
         <form onSubmit={handleLogin}>
           <div className="form-group mb-3">
-            <label className="form-label">Phone Number</label>
+            <label className="form-label">Email</label>
             <input
-              type="tel"
+              type="text"
               className="form-control"
-              placeholder="Enter your phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -79,6 +82,14 @@ const KiteLogin = () => {
           >
             {loading ? "Logging in..." : "Login"}
           </button>
+
+          <button
+            type="submit"
+            className="btn btn-primary w-100 mb-3"
+            onClick={()=>window.location.href="http://localhost:3000"}
+           >
+            Back
+           </button>
         </form>
 
         <div className="kite-login-footer">
