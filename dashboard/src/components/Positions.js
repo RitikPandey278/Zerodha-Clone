@@ -2,11 +2,15 @@ import React,{useEffect, useState} from "react";
 import axios, {all} from "axios";
 
 // import { positions } from "../data/data";
+const API_BASE_URL =
+window.location.hostname === "localhost"
+? "http://localhost:3002"
+: "https://zerodha-clone-stmi.onrender.com";
 
 const Positions = () => {
   const [allPositions, setallPositions] = useState([]);
   useEffect(()=>{
-    axios.get("http://localhost:3002/allPositions").then((res)=>{
+    axios.get(`${API_BASE_URL}/allPositions`).then((res)=>{
       setallPositions(res.data);
     });
   },[]);

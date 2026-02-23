@@ -3,6 +3,11 @@ import axios from "axios";
 import "./SellActionWindow.css";
 import GeneralContext from "./GeneralContext";
 
+const API_BASE_URL =
+window.location.hostname === "localhost"
+? "http://localhost:3002"
+: "https://zerodha-clone-stmi.onrender.com";
+
 const SellActionWindow = ({ uid }) => {
   const { closeSellWindow } = useContext(GeneralContext);
   const [stockDetails, setStockDetails] = useState({ name: "", qty: 0, price: 0 });
@@ -11,7 +16,7 @@ const SellActionWindow = ({ uid }) => {
   useEffect(() => {
     const fetchCurrentOrder = async () => {
         try{
-            const res = await axios.get("http://localhost:3002/allOrders");
+            const res = await axios.get(`${API_BASE_URL}/allOrders`);
             console.log("All Orders from DB:", res.data); // Debugging ke liye
             console.log("Looking for UID:", uid);
 
@@ -36,7 +41,7 @@ const SellActionWindow = ({ uid }) => {
   // 2. Final Sell Logic
   const handleSell = async () => {
     try {
-      const response = await axios.post("http://localhost:3002/sellOrder", { 
+      const response = await axios.post(`${API_BASE_URL}/sellOrder`, { 
         orderId: uid,
         qty: stockDetails.qty,
         price: stockDetails.price

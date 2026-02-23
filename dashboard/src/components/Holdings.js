@@ -4,14 +4,23 @@ import { VerticalGraph } from "./VerticalGraph";
 
 // import { holdings } from "../data/data";
 
+const API_BASE_URL =
+window.location.hostname === "localhost"
+? "http://localhost:3002"
+: "https://zerodha-clone-stmi.onrender.com";
+
 const Holdings = () => {
   const [allHoldings, setAllHoldings] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3002/allHoldings").then((res) => {
+    axios.get(`${API_BASE_URL}/allHoldings`).then((res) => {
       // console.log(res.data);
       setAllHoldings(res.data);
+    })
+    .catch((err)=>{
+      console.log("Fetch Holdings Error:",err);
     });
+    
   }, []);
 
   // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];

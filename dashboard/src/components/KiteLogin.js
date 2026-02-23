@@ -86,7 +86,7 @@ const KiteLogin = () => {
           <button
             type="submit"
             className="btn btn-primary w-100 mb-3"
-            onClick={()=>window.location.href="http://localhost:3000"}
+            onClick={()=>window.location.href="https://singular-conkies-83ad0c.netlify.app/"||"http://localhost:3000/"}
            >
             Back
            </button>
@@ -95,7 +95,7 @@ const KiteLogin = () => {
         <div className="kite-login-footer">
           <p>
             Don't have an account?{" "}
-            <a href="http://localhost:3001/signup" className="text-primary">
+            <a href="https://singular-conkies-83ad0c.netlify.app/" className="text-primary">
               Sign up on main website
             </a>
           </p>

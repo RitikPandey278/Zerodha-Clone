@@ -7,12 +7,17 @@ import GeneralContext from "./GeneralContext";
 
 import "./BuyActionWindow.css";
 
+const API_BASE_URL =
+window.location.hostname === "localhost"
+? "http://localhost:3002"
+: "https://zerodha-clone-stmi.onrender.com";
+
 const BuyActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
 
   const handleBuyClick = () => {
-    axios.post("http://localhost:3002/newOrder", {
+    axios.post(`${API_BASE_URL}/newOrder`, {
       name: uid,
       qty: stockQuantity,
       price: stockPrice,
